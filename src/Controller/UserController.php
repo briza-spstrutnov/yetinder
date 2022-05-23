@@ -3,11 +3,11 @@
 namespace App\Controller;
 
 use App\Form\RegisterFormType;
-use App\Repository\UserRepository;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController {
@@ -17,16 +17,26 @@ class UserController extends AbstractController {
         $this->em = $em;
     }
 
-    #[Route('/index', name: 'app_index')]
+    #[Route('/user/index', name: 'app_index')]
     public function index(): Response {
         // find all method
         return $this->render('user/index.html.twig');
     }
 
     #[Route('/user/register', name: 'register_user')]
-    public function register(): Response {
+    public function register(Request $request): Response {
         $user = new User();
         $form = $this->createForm(RegisterFormType::class, $user);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $newUser = $form->getData();
+
+            $this->em->persist($newUser);
+            $this->em->flush();
+            return $this->redirectToRoute('app_index');
+        }
 
         return $this->render('user/register.html.twig', [
             'form' => $form->createView()

@@ -33,7 +33,7 @@ class RegisterFormType extends AbstractType {
             ])
             ->add('height', NumberType::class, [
                 'attr' => array(
-                    'placeholder' => 'Výška...'
+                    'placeholder' => 'Výška'
                 ),
                 'label' => false
             ])
