@@ -27,11 +27,11 @@ class User {
     #[ORM\Column(type: 'integer')]
     private $weight;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $address;
-
     #[ORM\Column(type: 'integer')]
     private $rating;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $phoneNumber;
 
     public function getId(): ?int {
         return $this->id;
@@ -87,22 +87,24 @@ class User {
         return $this;
     }
 
-    public function getAddress(): ?string {
-        return $this->address;
-    }
-
-    public function setAddress(string $address): self {
-        $this->address = $address;
-
-        return $this;
-    }
-
     public function getRating(): ?int {
         return $this->rating;
     }
 
     public function setRating(int $rating): self {
         $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function setPhoneNumber(string $phoneNumber): self
+    {
+        $this->phoneNumber = $phoneNumber;
 
         return $this;
     }

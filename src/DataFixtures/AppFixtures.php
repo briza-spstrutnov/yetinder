@@ -17,7 +17,7 @@ class AppFixtures extends Fixture
         $user->setGender('male');
         $user->setHeight(180);
         $user->setWeight(80);
-        $user->setAddress('x, x, x');
+        $user->setPhoneNumber('000 000 000');
         $user->setRating(100);
         $manager->persist($user);
 
@@ -28,9 +28,19 @@ class AppFixtures extends Fixture
         $user2->setGender('female');
         $user2->setHeight(160);
         $user2->setWeight(60);
-        $user2->setAddress('y, y, y');
+        $user2->setPhoneNumber('111 111 111');
         $user2->setRating(110);
         $manager->persist($user2);
+
+        $user3 = new User();
+        $user3->setUsername('Test2');
+        $user3->setPassword('heslo123');
+        $user3->setGender('female');
+        $user3->setHeight(160);
+        $user3->setWeight(60);
+        $user3->setPhoneNumber('111 111 111');
+        $user3->setRating(110);
+        $manager->persist($user3);
 
         $manager->flush();
     }

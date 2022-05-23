@@ -1,9 +1,22 @@
 {% extends "base.html.twig" %}
 
-{% block title%}
+{% block title %}
     Registrace
 {% endblock %}
 
 {% block body %}
-    <h1>Registrace</h1>
+    {{ form_start(form) }}
+    {#    <input type="text" name="username" placeholder="Uživatelské jméno... "><br/> #}
+    {#    <input type="password" name="password" placeholder="Heslo... "><br/> #}
+    {#    <select name="gender"> #}
+    {#        <option value="male">male</option> #}
+    {#        <option value="female">female</option> #}
+    {#    </select><br/> #}
+    {#    <input type="number" name="height" placeholder="Výška..."> #}
+    {#    <input type="number" name="weight" placeholder="Váha..."> #}
+    {#    <input type="tel" name="phoneNumber" placeholder="Telefonní číslo..."> #}
+    {#    <input type="number" name="rating" style="display: none" value="100"> #}
+    {{ form_widget(form) }}
+    <input type="submit" value="Zaregistrovat se">
+    {{ form_end(form) }}
 {% endblock %}
