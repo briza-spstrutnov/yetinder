@@ -6,4 +6,7 @@
 
 {% block body %}
     <h3>Best</h3>
+    {% for x in yeti %}
+        <li>{{x.name}}</li>
+    {% endfor %}
 {% endblock %}

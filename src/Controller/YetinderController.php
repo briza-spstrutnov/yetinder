@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Yeti;
+use App\Repository\YetiRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,11 +17,12 @@ class YetinderController extends AbstractController {
     }
 
     #[Route('/', name: 'best')]
-    public function index(): Response {
-
+    public function index(YetiRepository $yetiRepository): Response {
+        $yeti = $yetiRepository->findBy([], ['rating' => 'DESC']);
 
         return $this->render('yetinder/best.html.twig', [
             'controller_name' => 'YetinderController',
+            'yeti' => $yeti,
         ]);
     }
 
