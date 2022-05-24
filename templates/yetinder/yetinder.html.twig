@@ -19,11 +19,25 @@
                 <th>Hodnocení</th>
             </tr>
             <tr>
-                <td>{{yeti.gender}}</td>
-                <td>{{yeti.height}}</td>
-                <td>{{yeti.weight}}</td>
-                <td>{{yeti.phoneNumber}}</td>
-                <td>{{yeti.rating}}</td>
+                <td>{{ yeti.gender }}</td>
+                <td>{{ yeti.height }}</td>
+                <td>{{ yeti.weight }}</td>
+                <td>{{ yeti.phoneNumber }}</td>
+                <td>{{ yeti.rating }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <form action="/yetinder/upvote" method="post">
+                        <input style="display: none" name="id" type="number" value="{{ yeti.id }}">
+                        <input type="submit" value="Upvote">
+                    </form>
+                </td>
+                <td>
+                    <form action="/yetinder/downvote" method="post">
+                        <input style="display: none" name="id" type="number" value="{{ yeti.id }}">
+                        <input type="submit" value="Downvote">
+                    </form>
+                </td>
             </tr>
         </table>
     </div>

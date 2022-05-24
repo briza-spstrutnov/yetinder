@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Yeti;
 use App\Repository\YetiRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,5 +41,24 @@ class YetinderController extends AbstractController {
         return $this->render('yetinder/yetinder.html.twig', [
             'yeti' => $yeti
         ]);
+    }
+
+    #[Route('/yetinder/upvote', name: 'upvote')]
+    public function upvote(Request $request, YetiRepository $yetiRepository): Response{
+        $id = $request->request->get('id');
+        $yeti = $yetiRepository->find($id);
+
+        $rating = $yeti->getRating();
+        $rating++;
+        $yeti->setRating($rating);
+        $this->em->persist($yeti);
+        $this->em->flush();
+
+        return $this->redirectToRoute('yetinder');
+    }
+
+    #[Route('/yetinder/downvote', name: 'downvote')]
+    public function downvote(): Response{
+        return $this->redirectToRoute('yetinder');
     }
 }
