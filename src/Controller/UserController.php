@@ -1,4 +1,5 @@
 <?php
+// TODO: Upravit registraci tak, aby musel uživatel zadat heslo pro kontrolu
 
 namespace App\Controller;
 
@@ -12,19 +13,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class UserController extends AbstractController {
     private $em;
+    private $requestStack;
 
-    public function __construct(EntityManagerInterface $em) {
+    public function __construct(EntityManagerInterface $em, RequestStack $requestStack) {
         $this->em = $em;
-    }
-
-    #[Route('/user/index', name: 'app_index')]
-    public function index(): Response {
-        // find all method
-        return $this->render('user/index.html.twig');
+        $this->requestStack = $requestStack;
     }
 
     #[Route('/user/register', name: 'user_register')]
@@ -73,6 +70,8 @@ class UserController extends AbstractController {
 
             $passwordHasher = $factory->getPasswordHasher('common');
 
+            $session = $this->requestStack->getSession();
+
             if (!$userInDb) {
                 return $this->redirectToRoute('user_login');
             }
@@ -82,12 +81,23 @@ class UserController extends AbstractController {
                 if(!$passwordHasher->verify($password, $userInput->getPassword())){
                     return $this->redirectToRoute('user_login');
                 }
-                dd($userInput->getPassword());
             }
+            $session->set('username', $userInput->getUsername());
+
+            return $this->redirectToRoute('user_profile');
         }
 
         return $this->render('user/login.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route('/user/profile', name: 'user_profile')]
+    public function profile(): Response{
+        $session = $this->requestStack->getSession();
+
+        dd($session->get('username'));
+
+        return $this->render('user/profile.html.twig');
     }
 }
