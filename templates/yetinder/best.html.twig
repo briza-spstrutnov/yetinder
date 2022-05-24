@@ -5,8 +5,18 @@
 {% endblock %}
 
 {% block body %}
-    <h3>Best</h3>
-    {% for x in yeti %}
-        <li>{{x.name}}</li>
-    {% endfor %}
+    <div class="container">
+        <h2>Best</h2>
+
+        {% for x in yeti %}
+            <div class="yeti justify-content-md-center">
+                <h4>{{ x.name }}</h4>
+                <p>{{ x.gender }}</p>
+                <p>{{ x.height }}</p>
+                <p>{{ x.weight }}</p>
+                <p>{{ x.rating }}</p>
+                <p>{{ x.phoneNumber }}</p>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
