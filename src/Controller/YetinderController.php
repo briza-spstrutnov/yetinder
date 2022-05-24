@@ -22,7 +22,7 @@ class YetinderController extends AbstractController {
         $yetiDb = $yetiRepository->findBy([], ['rating' => 'DESC']);
         $yeti = array();
 
-        for($x = 0; $x < 10; $x++){
+        for ($x = 0; $x < 10; $x++) {
             $yeti[] = $yetiDb[$x];
         }
 
@@ -44,7 +44,7 @@ class YetinderController extends AbstractController {
     }
 
     #[Route('/yetinder/upvote', name: 'upvote')]
-    public function upvote(Request $request, YetiRepository $yetiRepository): Response{
+    public function upvote(Request $request, YetiRepository $yetiRepository): Response {
         $id = $request->request->get('id');
         $yeti = $yetiRepository->find($id);
 
@@ -58,7 +58,16 @@ class YetinderController extends AbstractController {
     }
 
     #[Route('/yetinder/downvote', name: 'downvote')]
-    public function downvote(): Response{
+    public function downvote(Request $request, YetiRepository $yetiRepository): Response {
+        $id = $request->request->get('id');
+        $yeti = $yetiRepository->find($id);
+
+        $rating = $yeti->getRating();
+        $rating--;
+        $yeti->setRating($rating);
+        $this->em->persist($yeti);
+        $this->em->flush();
+
         return $this->redirectToRoute('yetinder');
     }
 }
