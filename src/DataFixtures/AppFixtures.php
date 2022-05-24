@@ -4,14 +4,14 @@ namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use App\Entity\User;
+use App\Entity\Yeti;
 
 class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // First user
-        $user = new User();
+        // First yeti
+        $user = new Yeti();
         $user->setUsername('Test1');
         $user->setPassword('heslo123');
         $user->setGender('male');
@@ -21,8 +21,8 @@ class AppFixtures extends Fixture
         $user->setRating(100);
         $manager->persist($user);
 
-        // Second user
-        $user2 = new User();
+        // Second yeti
+        $user2 = new Yeti();
         $user2->setUsername('Test2');
         $user2->setPassword('heslo123');
         $user2->setGender('female');
@@ -32,7 +32,7 @@ class AppFixtures extends Fixture
         $user2->setRating(110);
         $manager->persist($user2);
 
-        $user3 = new User();
+        $user3 = new Yeti();
         $user3->setUsername('Test2');
         $user3->setPassword('heslo123');
         $user3->setGender('female');

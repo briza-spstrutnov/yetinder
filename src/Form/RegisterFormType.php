@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\Yeti;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,15 +15,9 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 class RegisterFormType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
-            ->add('username', TextType::class, [
+            ->add('name', TextType::class, [
                 'attr' => array(
                     'placeholder' => 'Uživatelské jméno',
-                ),
-                'label' => false
-            ])
-            ->add('password', PasswordType::class, [
-                'attr' => array(
-                    'placeholder' => 'Heslo'
                 ),
                 'label' => false
             ])
@@ -59,7 +53,7 @@ class RegisterFormType extends AbstractType {
 
     public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Yeti::class,
         ]);
     }
 }

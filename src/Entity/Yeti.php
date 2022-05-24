@@ -2,21 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
+use App\Repository\YetiRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
-class User {
+#[ORM\Entity(repositoryClass: YetiRepository::class)]
+class Yeti {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $username;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $password;
+    private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $gender;
@@ -37,22 +34,12 @@ class User {
         return $this->id;
     }
 
-    public function getUsername(): ?string {
-        return $this->username;
+    public function getName(): ?string {
+        return $this->name;
     }
 
-    public function setUsername(string $username): self {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self {
-        $this->password = $password;
+    public function setName(string $name): self {
+        $this->name = $name;
 
         return $this;
     }
