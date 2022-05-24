@@ -7,15 +7,27 @@
 {% block body %}
     <div class="container">
         <h2>Best</h2>
-
         {% for x in yeti %}
             <div class="yeti justify-content-md-center">
-                <h4>{{ x.name }}</h4>
-                <p>{{ x.gender }}</p>
-                <p>{{ x.height }}</p>
-                <p>{{ x.weight }}</p>
-                <p>{{ x.rating }}</p>
-                <p>{{ x.phoneNumber }}</p>
+                <table class="yeti-table">
+                    <tr>
+                        <th style="font-size: 25px">{{x.name}}</th>
+                    </tr>
+                    <tr>
+                        <th>Pohlaví</th>
+                        <th>Výška</th>
+                        <th>Váha</th>
+                        <th>Telefonní číslo</th>
+                        <th>Hodnocení</th>
+                    </tr>
+                    <tr>
+                        <td>{{ x.gender }}</td>
+                        <td>{{ x.height }}</td>
+                        <td>{{ x.weight }}</td>
+                        <td>{{ x.phoneNumber }}</td>
+                        <td>{{ x.rating }}</td>
+                    </tr>
+                </table>
             </div>
         {% endfor %}
     </div>

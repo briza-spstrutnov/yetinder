@@ -5,4 +5,26 @@
 {% endblock %}
 
 {% block body %}
+    <h2>Yetinder</h2>
+    <div class="random-yeti">
+        <table>
+            <tr>
+                <th style="font-size: 25px">{{ yeti.name }}</th>
+            </tr>
+            <tr>
+                <th>Pohlaví</th>
+                <th>Výška</th>
+                <th>Váha</th>
+                <th>Telefonní číslo</th>
+                <th>Hodnocení</th>
+            </tr>
+            <tr>
+                <td>{{yeti.gender}}</td>
+                <td>{{yeti.height}}</td>
+                <td>{{yeti.weight}}</td>
+                <td>{{yeti.phoneNumber}}</td>
+                <td>{{yeti.rating}}</td>
+            </tr>
+        </table>
+    </div>
 {% endblock %}
