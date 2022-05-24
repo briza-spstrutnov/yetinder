@@ -18,12 +18,12 @@ class YetinderController extends AbstractController {
 
     #[Route('/', name: 'best')]
     public function index(YetiRepository $yetiRepository): Response {
-        $yeti = $yetiRepository->findBy([], ['rating' => 'DESC']);
-
+        $yetiDb = $yetiRepository->findBy([], ['rating' => 'DESC']);
+        $yeti = array();
 //        dd($yeti[10]);
 
-        for($x = 6; $x <= count($yeti); $x++){
-            unset($yeti[$x]);
+        for($x = 0; $x < 10; $x++){
+            $yeti[] = $yetiDb[$x];
         }
 
         return $this->render('yetinder/best.html.twig', [
