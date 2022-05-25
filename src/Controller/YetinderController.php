@@ -53,7 +53,12 @@ class YetinderController extends AbstractController {
 
         $userDb = $userRepository->find($userId);
         $likedId = $userDb->getLiked()->getValues();
-        dd($likedId);
+
+        foreach($likedId as $liked){
+            if($liked->getId() == $yeti->getId()){
+                return $this->redirectToRoute('yetinder');
+            }
+        }
 
         // redirect pokud uživatel není přihlášený
         if(!$user){
