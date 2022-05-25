@@ -37,22 +37,27 @@ class YetinderController extends AbstractController {
     }
 
     #[Route('/yetinder', name: 'yetinder')]
-    public function yetinder(YetiRepository $yetiRepository): Response {
+    public function yetinder(YetiRepository $yetiRepository, UserRepository $userRepository): Response {
         $yetiDb = $yetiRepository->findAll();
 
         $yeti = $yetiDb[rand(0, count($yetiDb) - 1)];
 
         $session = $this->requestStack->getSession();
         $user = $session->get('user');
-
-        // redirect pokud uživatel není přihlášený
-        if(!$user){
-            return $this->redirectToRoute('user_login');
-        }
+        $users = $userRepository->findAll();
 
         $userId = null;
         foreach($user as $credential){
             $userId = $credential->getId();
+        }
+
+        $userDb = $userRepository->find($userId);
+        $likedId = $userDb->getLiked()->getValues();
+        dd($likedId);
+
+        // redirect pokud uživatel není přihlášený
+        if(!$user){
+            return $this->redirectToRoute('user_login');
         }
 
         return $this->render('yetinder/yetinder.html.twig', [
