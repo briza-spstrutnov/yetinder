@@ -86,9 +86,20 @@ class YetinderController extends AbstractController {
     }
 
     #[Route('/yetinder/downvote', name: 'downvote')]
-    public function downvote(Request $request, YetiRepository $yetiRepository): Response {
+    public function downvote(Request $request, YetiRepository $yetiRepository, UserRepository $userRepository): Response {
         $id = $request->request->get('id');
         $yeti = $yetiRepository->find($id);
+
+        $session = $this->requestStack->getSession();
+        $user = $session->get('user');
+
+        $userId = null;
+        foreach($user as $credential){
+            $userId = $credential->getId();
+        }
+
+        $userDb = $userRepository->find($userId);
+        $userDb->addLiked($yeti);
 
         $rating = $yeti->getRating();
         $rating--;
