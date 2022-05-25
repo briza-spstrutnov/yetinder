@@ -28,10 +28,6 @@ class YetinderController extends AbstractController {
             $yeti[] = $yetiDb[$x];
         }
 
-        $session = $this->requestStack->getSession();
-
-        dd($session->get('user'));
-
         return $this->render('yetinder/best.html.twig', [
             'controller_name' => 'YetinderController',
             'yeti' => $yeti,
@@ -44,6 +40,19 @@ class YetinderController extends AbstractController {
 
         $yeti = $yetiDb[rand(0, count($yetiDb) - 1)];
 
+        $session = $this->requestStack->getSession();
+        $user = $session->get('user');
+
+        // redirect pokud uživatel není přihlášený
+        if(!$user){
+            return $this->redirectToRoute('user_login');
+        }
+
+        $userId = null;
+        foreach($user as $credential){
+            $userId = $credential->getId();
+        }
+
         return $this->render('yetinder/yetinder.html.twig', [
             'yeti' => $yeti
         ]);
@@ -53,6 +62,9 @@ class YetinderController extends AbstractController {
     public function upvote(Request $request, YetiRepository $yetiRepository): Response {
         $id = $request->request->get('id');
         $yeti = $yetiRepository->find($id);
+
+        $session = $this->requestStack->getSession();
+        $user = $session->get('user');
 
         $rating = $yeti->getRating();
         $rating++;
