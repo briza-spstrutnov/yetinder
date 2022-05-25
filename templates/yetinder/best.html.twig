@@ -5,6 +5,11 @@
 {% endblock %}
 
 {% block body %}
+    <header>
+        <form action="/user/logout" method="post">
+            <input type="submit" value="Odhlásit se">
+        </form>
+    </header>
     <div class="container">
         <h2>Best</h2>
         {% for x in yeti %}

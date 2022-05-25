@@ -5,6 +5,8 @@
 {% endblock %}
 
 {% block body %}
+    {% block header %}
+    {% endblock%}
     <div id="register-form" class="form">
         {{ form_start(form) }}
         {{ form_widget(form) }}

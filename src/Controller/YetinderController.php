@@ -2,19 +2,21 @@
 
 namespace App\Controller;
 
-use App\Entity\Yeti;
 use App\Repository\YetiRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class YetinderController extends AbstractController {
     private $em;
+    private $requestStack;
 
-    public function __construct(EntityManagerInterface $em) {
+    public function __construct(EntityManagerInterface $em, RequestStack $requestStack) {
         $this->em = $em;
+        $this->requestStack = $requestStack;
     }
 
     #[Route('/', name: 'best')]
@@ -25,6 +27,10 @@ class YetinderController extends AbstractController {
         for ($x = 0; $x < 10; $x++) {
             $yeti[] = $yetiDb[$x];
         }
+
+        $session = $this->requestStack->getSession();
+
+        dd($session->get('user'));
 
         return $this->render('yetinder/best.html.twig', [
             'controller_name' => 'YetinderController',

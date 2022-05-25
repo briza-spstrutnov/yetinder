@@ -86,7 +86,6 @@ class UserController extends AbstractController {
             }
 
             $session->set('user', $userDb);
-            dd($session->get('user'));
             $session->set('isAuth', true);
 
             return $this->redirectToRoute('best');
@@ -95,5 +94,14 @@ class UserController extends AbstractController {
         return $this->render('user/login.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route('/user/logout', name: 'user_logout')]
+    public function logout(Request $request): Response{
+        $session = $this->requestStack->getSession();
+
+        $session->clear();
+
+        return $this->redirectToRoute('best');
     }
 }
