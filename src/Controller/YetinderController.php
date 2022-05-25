@@ -38,6 +38,15 @@ class YetinderController extends AbstractController {
 
     #[Route('/yetinder', name: 'yetinder')]
     public function yetinder(YetiRepository $yetiRepository, UserRepository $userRepository): Response {
+        /* TODO:
+            1. Načíst celou db
+            2. Zkontrolovat podle id, na které už uživatel reagoval
+            3. Smazat ty, na které už uživatel reagoval
+            4. Udělat random z upraveného arraye
+            5. Vypsat na stránku
+        */
+
+
         $yetiDb = $yetiRepository->findAll();
 
         $yeti = $yetiDb[rand(0, count($yetiDb) - 1)];
