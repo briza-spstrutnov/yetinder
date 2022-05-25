@@ -1,0 +1,14 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Přihlášení
+{% endblock %}
+
+{% block body %}
+    <div id="register-form" class="form">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="Zaregistrovat se">
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
