@@ -46,6 +46,11 @@ class YetinderController extends AbstractController {
         $user = $session->get('user');
         $users = $userRepository->findAll();
 
+        // redirect pokud uživatel není přihlášený
+        if(!$user){
+            return $this->redirectToRoute('user_login');
+        }
+
         $userId = null;
         foreach($user as $credential){
             $userId = $credential->getId();
@@ -54,15 +59,12 @@ class YetinderController extends AbstractController {
         $userDb = $userRepository->find($userId);
         $likedId = $userDb->getLiked()->getValues();
 
-        foreach($likedId as $liked){
-            if($liked->getId() == $yeti->getId()){
-                return $this->redirectToRoute('yetinder');
+        if(count($likedId) != count($yetiDb)){
+            foreach($likedId as $liked){
+                if($liked->getId() == $yeti->getId()){
+                    return $this->redirectToRoute('yetinder');
+                }
             }
-        }
-
-        // redirect pokud uživatel není přihlášený
-        if(!$user){
-            return $this->redirectToRoute('user_login');
         }
 
         return $this->render('yetinder/yetinder.html.twig', [
