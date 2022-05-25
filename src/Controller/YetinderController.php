@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\UserRepository;
 use App\Repository\YetiRepository;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,12 +61,20 @@ class YetinderController extends AbstractController {
     }
 
     #[Route('/yetinder/upvote', name: 'upvote')]
-    public function upvote(Request $request, YetiRepository $yetiRepository): Response {
+    public function upvote(Request $request, YetiRepository $yetiRepository, UserRepository $userRepository): Response {
         $id = $request->request->get('id');
         $yeti = $yetiRepository->find($id);
 
         $session = $this->requestStack->getSession();
         $user = $session->get('user');
+
+        $userId = null;
+        foreach($user as $credential){
+            $userId = $credential->getId();
+        }
+
+        $userDb = $userRepository->find($userId);
+        $userDb->addLiked($yeti);
 
         $rating = $yeti->getRating();
         $rating++;
