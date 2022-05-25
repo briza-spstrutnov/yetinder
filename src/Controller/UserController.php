@@ -12,12 +12,15 @@ use App\Repository\UserRepository;
 use App\Form\UserRegisterFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class UserController extends AbstractController {
     private $em;
+    private $requestStack;
 
-    public function __construct(EntityManagerInterface $em) {
+    public function __construct(EntityManagerInterface $em, RequestStack $requestStack) {
         $this->em = $em;
+        $this->requestStack = $requestStack;
     }
 
     #[Route('/user/register', name: 'user_register')]
@@ -27,13 +30,13 @@ class UserController extends AbstractController {
 
         $form->handleRequest($request);
 
-        $factory = new PasswordHasherFactory([
-            'common' => ['algorithm' => 'bcrypt'],
-            'memory-hard' => ['algorithm' => 'sodium'],
-        ]);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $newUser = $form->getData();
+
+            $factory = new PasswordHasherFactory([
+                'common' => ['algorithm' => 'bcrypt'],
+                'memory-hard' => ['algorithm' => 'sodium'],
+            ]);
 
             $passwordHasher = $factory->getPasswordHasher('common');
             $plainTextPassword = $newUser->getPassword();
@@ -58,14 +61,16 @@ class UserController extends AbstractController {
 
         $form->handleRequest($request);
 
-        $factory = new PasswordHasherFactory([
-            'common' => ['algorithm' => 'bcrypt'],
-            'memory-hard' => ['algorithm' => 'sodium'],
-        ]);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $userInput = $form->getData();
             $userDb = $userRepository->findBy(['username' => $userInput->getUsername()]);
+
+            $session = $this->requestStack->getSession();
+
+            $factory = new PasswordHasherFactory([
+                'common' => ['algorithm' => 'bcrypt'],
+                'memory-hard' => ['algorithm' => 'sodium'],
+            ]);
 
             $passwordHasher = $factory->getPasswordHasher('common');
 
@@ -79,6 +84,10 @@ class UserController extends AbstractController {
                     return $this->redirectToRoute('user_login');
                 }
             }
+
+            $session->set('user', $userDb);
+            dd($session->get('user'));
+            $session->set('isAuth', true);
 
             return $this->redirectToRoute('best');
         }

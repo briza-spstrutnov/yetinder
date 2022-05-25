@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\YetiRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: YetiRepository::class)]
@@ -84,13 +86,11 @@ class Yeti {
         return $this;
     }
 
-    public function getPhoneNumber(): ?string
-    {
+    public function getPhoneNumber(): ?string {
         return $this->phoneNumber;
     }
 
-    public function setPhoneNumber(string $phoneNumber): self
-    {
+    public function setPhoneNumber(string $phoneNumber): self {
         $this->phoneNumber = $phoneNumber;
 
         return $this;
