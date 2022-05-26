@@ -18,7 +18,8 @@
 <body>
 {% block body %}
     {% block header %}
-
+{#        <a href="/{{ app.user ? 'logout' : 'login' }}"></a>#}
+{#        {{ app.user ? 'Logout' : 'Login' }}#}
     {% endblock %}
 {% endblock %}
 </body>
