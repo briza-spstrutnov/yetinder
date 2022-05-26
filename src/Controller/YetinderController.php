@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\User\UserInterface;
+use App\Entity\Yeti;
 
 class YetinderController extends AbstractController {
     private $em;
@@ -35,8 +36,7 @@ class YetinderController extends AbstractController {
     #[Route('/yetinder', name: 'yetinder')]
     public function yetinder(YetiRepository $yetiRepository, UserRepository $userRepository, UserInterface $user): Response {
         $yetiDb = $yetiRepository->findAll();
-
-        $session = $this->requestStack->getSession();
+        $yeti = [rand(1, count($yetiDb))];
 
         $securityContext = $this->container->get('security.authorization_checker');
 
@@ -48,33 +48,33 @@ class YetinderController extends AbstractController {
 
         $userDb = $userRepository->find($userId);
 //        $liked = $userDb->getLiked()->getValues();
-        $likedId = array();
+//        $likedId = array();
 //        foreach ($liked as $x) {
 //            $likedId[] = $x->getId();
 //        }
 
-        $yetiId = array();
-        foreach ($yetiDb as $y) {
-            $yetiId[] = $y->getId();
-        }
+//        $yetiId = array();
+//        foreach ($yetiDb as $y) {
+//            $yetiId[] = $y->getId();
+//        }
+//
+//        foreach ($likedId as $l) {
+//            foreach (array_keys($yetiId, $l, true) as $key) {
+//                unset($yetiId[$key]);
+//            }
+//        }
+//
+//        $yetiNoInteraction = array();
+//        foreach ($yetiId as $i) {
+//            $yetiNoInteraction[] = $i;
+//        }
+//
+//        if (count($yetiNoInteraction) <= 0) {
+//            return $this->render('yetinder/yetinder.html.twig');
+//        }
 
-        foreach ($likedId as $l) {
-            foreach (array_keys($yetiId, $l, true) as $key) {
-                unset($yetiId[$key]);
-            }
-        }
-
-        $yetiNoInteraction = array();
-        foreach ($yetiId as $i) {
-            $yetiNoInteraction[] = $i;
-        }
-
-        if (count($yetiNoInteraction) <= 0) {
-            return $this->render('yetinder/yetinder.html.twig');
-        }
-
-        $yeti = $yetiNoInteraction[rand(0, count($yetiNoInteraction) - 1)];
-        $yeti = $yetiRepository->find($yeti);
+//        $yeti = $yetiNoInteraction[rand(0, count($yetiNoInteraction) - 1)];
+        $yeti = $yetiRepository->find($yeti[0]);
 
         return $this->render('yetinder/yetinder.html.twig', [
             'yeti' => $yeti
