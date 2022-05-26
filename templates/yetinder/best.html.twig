@@ -8,6 +8,7 @@
     <div class="container">
         {% block header %}
             <header>
+                <h2>Nejlépe hodnocení</h2>
                 <form action="/user/logout" method="post">
                     <input type="submit" value="Odhlásit se">
                 </form>
@@ -20,7 +21,7 @@
             </header>
         {% endblock %}
         <div class="container">
-            <h2>Best</h2>
+
             {% for x in yeti %}
                 <div class="yeti justify-content-md-center">
                     <table class="yeti-table">

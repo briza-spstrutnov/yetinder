@@ -109,38 +109,7 @@ class YetinderController extends AbstractController {
         $userDb = $userRepository->find($userId);
         $userDb->addLiked($yeti);
 
-        $time = $timeClickRepository->findAll();
-        $startTimeString = array();
-        $endTimeString = array();
-        foreach ($time as $t) {
-            $startTimeString[] = $t->getTime();
-            $endTimeString[] = $t->getEndTime();
-        }
-
-        $startTime = array();
-        foreach ($startTimeString as $time) {
-            $startTime[] = strtotime($time);
-        }
-
-        $endTime = array();
-        foreach ($endTimeString as $time) {
-            $endTime[] = strtotime($time);
-        }
-
-        $now = time();
-        $dayTime = array();
-        foreach (array_combine($startTime, $endTime) as $start => $end) {
-            if ($now >= $start && $now <= $end) {
-                $dayTime[] = $start;
-                $dayTime[] = $end;
-            }
-        }
-
-        $startDayTime = date('H:i:s', $dayTime[0]);
-        $clickTime = $timeClickRepository->findOneBy(['time' => $startDayTime]);
-        $clicks = $clickTime->getClicks();
-        $clicks++;
-        $clickTime->setClicks($clicks);
+        $this->addTimeClicks($timeClickRepository);
 
         $rating = $yeti->getRating();
         $rating++;
@@ -167,6 +136,19 @@ class YetinderController extends AbstractController {
         $userDb = $userRepository->find($userId);
         $userDb->addLiked($yeti);
 
+        $this->addTimeClicks($timeClickRepository);
+
+        $rating = $yeti->getRating();
+        $rating--;
+        $yeti->setRating($rating);
+        $this->em->persist($yeti);
+        $this->em->flush();
+
+        return $this->redirectToRoute('yetinder');
+    }
+
+    public function addTimeClicks(TimeClickRepository $timeClickRepository){
+        date_default_timezone_set('Europe/Prague');
         $time = $timeClickRepository->findAll();
         $startTimeString = array();
         $endTimeString = array();
@@ -199,13 +181,5 @@ class YetinderController extends AbstractController {
         $clicks = $clickTime->getClicks();
         $clicks++;
         $clickTime->setClicks($clicks);
-
-        $rating = $yeti->getRating();
-        $rating--;
-        $yeti->setRating($rating);
-        $this->em->persist($yeti);
-        $this->em->flush();
-
-        return $this->redirectToRoute('yetinder');
     }
 }

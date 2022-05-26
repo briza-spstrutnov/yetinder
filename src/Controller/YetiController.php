@@ -27,7 +27,7 @@ class YetiController extends AbstractController {
 
         if ($form->isSubmitted() && $form->isValid()) {
             $newYeti = $form->getData();
-
+            $newYeti->setRating(100);
             $this->em->persist($newYeti);
             $this->em->flush();
             return $this->redirectToRoute('best');

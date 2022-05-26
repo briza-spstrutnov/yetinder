@@ -8,6 +8,7 @@
     <div class="container">
         {% block header %}
             <header>
+                <h2>Yetinder</h2>
                 <form action="/user/logout" method="post">
                     <input type="submit" value="Odhlásit se">
                 </form>
@@ -19,7 +20,6 @@
                 <a href="/">Nejlépe hodnocení</a>
             </header>
         {% endblock %}
-        <h2>Yetinder</h2>
         {% if yeti is defined %}
             <div class="random-yeti">
                 <table>

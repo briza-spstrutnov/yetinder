@@ -37,12 +37,6 @@ class RegisterFormType extends AbstractType {
                 ),
                 'label' => false
             ])
-            ->add('rating', NumberType::class, [
-                'attr' => array(
-                    'value' => 100,
-                ),
-                'label' => false
-            ])
             ->add('phoneNumber',TelType::class, [
                 'attr' => array(
                     'placeholder' => 'Telefonní číslo'
