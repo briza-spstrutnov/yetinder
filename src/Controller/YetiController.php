@@ -1,6 +1,4 @@
 <?php
-// TODO: Upravit registraci tak, aby musel uživatel zadat heslo pro kontrolu
-
 namespace App\Controller;
 
 use App\Form\RegisterFormType;
