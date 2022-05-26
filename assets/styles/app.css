@@ -5,3 +5,7 @@ body {
 h1{
     font-size: 80px;
 }
+
+table, th, td, tr {
+    border:1px solid black;
+}

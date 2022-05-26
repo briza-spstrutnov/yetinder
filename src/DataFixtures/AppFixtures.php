@@ -2,45 +2,46 @@
 
 namespace App\DataFixtures;
 
+use Cassandra\Time;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use App\Entity\Yeti;
+use App\Entity\TimeClick;
 
 class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // First yeti
-        $user = new Yeti();
-        $user->setUsername('Test1');
-        $user->setPassword('heslo123');
-        $user->setGender('male');
-        $user->setHeight(180);
-        $user->setWeight(80);
-        $user->setPhoneNumber('000 000 000');
-        $user->setRating(100);
-        $manager->persist($user);
+        $morning = new TimeClick();
+        $morning->setTime(strftime("%X",mktime(6,0,0)));
+        $morning->setClicks(0);
+        $morning->setDayTime('morning');
+        $morning->setEndTime(strftime("%X",mktime(11,59,59)));
 
-        // Second yeti
-        $user2 = new Yeti();
-        $user2->setUsername('Test2');
-        $user2->setPassword('heslo123');
-        $user2->setGender('female');
-        $user2->setHeight(160);
-        $user2->setWeight(60);
-        $user2->setPhoneNumber('111 111 111');
-        $user2->setRating(110);
-        $manager->persist($user2);
+        $manager->persist($morning);
 
-        $user3 = new Yeti();
-        $user3->setUsername('Test2');
-        $user3->setPassword('heslo123');
-        $user3->setGender('female');
-        $user3->setHeight(160);
-        $user3->setWeight(60);
-        $user3->setPhoneNumber('111 111 111');
-        $user3->setRating(110);
-        $manager->persist($user3);
+        $afternoon = new TimeClick();
+        $afternoon->setTime(strftime("%X",mktime(12,0,0)));
+        $afternoon->setClicks(0);
+        $afternoon->setDayTime('afternoon');
+        $afternoon->setEndTime(strftime("%X",mktime(17,59,59)));
+
+        $manager->persist($afternoon);
+
+        $evening = new TimeClick();
+        $evening->setTime(strftime("%X",mktime(18,0,0)));
+        $evening->setClicks(0);
+        $evening->setDayTime('evening');
+        $evening->setEndTime(strftime("%X",mktime(23,59,59)));
+
+        $manager->persist($evening);
+
+        $night = new TimeClick();
+        $night->setTime(strftime("%X",mktime(12,0,0)));
+        $night->setClicks(0);
+        $night->setDayTime('night');
+        $night->setEndTime(strftime("%X",mktime(17,59,59)));
+
+        $manager->persist($night);
 
         $manager->flush();
     }

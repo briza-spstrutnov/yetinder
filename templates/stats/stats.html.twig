@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Statistiky
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% block header %}
+            <h2>Statistiky</h2>
+        {% endblock %}
+        <table id="gender">
+            <tr>
+                <h3>Pohlaví</h3>
+            </tr>
+            <tr>
+                <th>Celkový počet</th>
+                <th>Počet žen</th>
+                <th>% Žen</th>
+                <th>Počet mužů</th>
+                <th>% Mužů</th>
+            </tr>
+            <tr>
+                <td>{{ allYeti }}</td>
+                <td>{{ allFemaleYeti }}</td>
+                <td>{{ femalePercentage }}</td>
+                <td>{{ allMaleYeti }}</td>
+                <td>{{ malePercentage }}</td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}
