@@ -16,11 +16,18 @@
     {% endblock %}
 </head>
 <body>
-{% block body %}
-    {% block header %}
-{#        <a href="/{{ app.user ? 'logout' : 'login' }}"></a>#}
-{#        {{ app.user ? 'Logout' : 'Login' }}#}
-    {% endblock %}
-{% endblock %}
+    <header>
+        <h2>Yetinder</h2>
+        <form action="/logout" method="post">
+            <input type="submit" value="Odhlásit se">
+        </form>
+        <a href="/yetinder">Yetinder</a>
+        <a href="/login">Přihlásit se</a>
+        <a href="/register">Zaregistrovat se</a>
+        <a href="/yeti/register">Nový Yeti</a>
+        <a href="/stats">Statistiky</a>
+        <a href="/">Nejlépe hodnocení</a>
+    </header>
+{% block body %}{% endblock %}
 </body>
 </html>
