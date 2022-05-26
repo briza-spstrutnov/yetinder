@@ -3,72 +3,96 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User {
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $username;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'json')]
+    private $roles = [];
+
+    #[ORM\Column(type: 'string')]
     private $password;
 
-    #[ORM\ManyToMany(targetEntity: Yeti::class, inversedBy: 'no')]
-    private $liked;
-
-    public function __construct() {
-        $this->liked = new ArrayCollection();
-    }
-
-    public function getId(): ?int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    public function getUsername(): ?string {
+    public function getUsername(): ?string
+    {
         return $this->username;
     }
 
-    public function setUsername(string $username): self {
+    public function setUsername(string $username): self
+    {
         $this->username = $username;
 
         return $this;
     }
 
-    public function getPassword(): ?string {
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
+    {
         return $this->password;
     }
 
-    public function setPassword(string $password): self {
+    public function setPassword(string $password): self
+    {
         $this->password = $password;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Yeti>
+     * @see UserInterface
      */
-    public function getLiked(): Collection {
-        return $this->liked;
-    }
-
-    public function addLiked(Yeti $liked): self {
-        if (!$this->liked->contains($liked)) {
-            $this->liked[] = $liked;
-        }
-
-        return $this;
-    }
-
-    public function removeLiked(Yeti $liked): self {
-        $this->liked->removeElement($liked);
-
-        return $this;
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 }
