@@ -23,22 +23,11 @@ class YetinderController extends AbstractController {
 
     #[Route('/', name: 'best')]
     public function index(YetiRepository $yetiRepository): Response {
-        $yetiDb = $yetiRepository->findBy([], ['rating' => 'DESC']);
-        $yeti = array();
-
-        if (count($yetiDb) < 10) {
-            for ($x = 0; $x < count($yetiDb); $x++) {
-                $yeti[] = $yetiDb[$x];
-            }
-        } else {
-            for ($x = 0; $x < 10; $x++) {
-                $yeti[] = $yetiDb[$x];
-            }
-        }
+        $yetiDb = $yetiRepository->findBy([], ['rating' => 'DESC'], 10);
 
         return $this->render('yetinder/best.html.twig', [
             'controller_name' => 'YetinderController',
-            'yeti' => $yeti,
+            'yeti' => $yetiDb,
         ]);
     }
 
