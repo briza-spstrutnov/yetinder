@@ -5,12 +5,25 @@
 {% endblock %}
 
 {% block body %}
-    {% block header %}
-    {% endblock%}
-    <div id="register-form" class="form">
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Zaregistrovat se">
-        {{ form_end(form) }}
+    <div class="container">
+        {% block header %}
+            <header>
+                <form action="/user/logout" method="post">
+                    <input type="submit" value="Odhlásit se">
+                </form>
+                <a href="/yetinder">Yetinder</a>
+                <a href="/user/login">Přihlásit se</a>
+                <a href="/user/register">Zaregistrovat se</a>
+                <a href="/yeti/register">Nový Yeti</a>
+                <a href="/stats">Statistiky</a>
+                <a href="/">Nejlépe hodnocení</a>
+            </header>
+        {% endblock %}
+        <div id="register-form" class="form">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <input type="submit" value="Zaregistrovat se">
+            {{ form_end(form) }}
+        </div>
     </div>
 {% endblock %}

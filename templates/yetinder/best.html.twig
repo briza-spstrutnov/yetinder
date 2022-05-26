@@ -5,38 +5,45 @@
 {% endblock %}
 
 {% block body %}
-    <header>
-        <form action="/user/logout" method="post">
-            <input type="submit" value="Odhlásit se">
-        </form>
-        <a href="/yetinder">Yetinder</a>
-        <a href="/user/login">Přihlásit se</a>
-        <a href="/user/register">Zaregistrovat se</a>
-    </header>
     <div class="container">
-        <h2>Best</h2>
-        {% for x in yeti %}
-            <div class="yeti justify-content-md-center">
-                <table class="yeti-table">
-                    <tr>
-                        <th style="font-size: 25px">{{x.name}}</th>
-                    </tr>
-                    <tr>
-                        <th>Pohlaví</th>
-                        <th>Výška</th>
-                        <th>Váha</th>
-                        <th>Telefonní číslo</th>
-                        <th>Hodnocení</th>
-                    </tr>
-                    <tr>
-                        <td>{{ x.gender }}</td>
-                        <td>{{ x.height }}</td>
-                        <td>{{ x.weight }}</td>
-                        <td>{{ x.phoneNumber }}</td>
-                        <td>{{ x.rating }}</td>
-                    </tr>
-                </table>
-            </div>
-        {% endfor %}
+        {% block header %}
+            <header>
+                <form action="/user/logout" method="post">
+                    <input type="submit" value="Odhlásit se">
+                </form>
+                <a href="/yetinder">Yetinder</a>
+                <a href="/user/login">Přihlásit se</a>
+                <a href="/user/register">Zaregistrovat se</a>
+                <a href="/yeti/register">Nový Yeti</a>
+                <a href="/stats">Statistiky</a>
+                <a href="/">Nejlépe hodnocení</a>
+            </header>
+        {% endblock %}
+        <div class="container">
+            <h2>Best</h2>
+            {% for x in yeti %}
+                <div class="yeti justify-content-md-center">
+                    <table class="yeti-table">
+                        <tr>
+                            <th style="font-size: 25px">{{ x.name }}</th>
+                        </tr>
+                        <tr>
+                            <th>Pohlaví</th>
+                            <th>Výška</th>
+                            <th>Váha</th>
+                            <th>Telefonní číslo</th>
+                            <th>Hodnocení</th>
+                        </tr>
+                        <tr>
+                            <td>{{ x.gender }}</td>
+                            <td>{{ x.height }}</td>
+                            <td>{{ x.weight }}</td>
+                            <td>{{ x.phoneNumber }}</td>
+                            <td>{{ x.rating }}</td>
+                        </tr>
+                    </table>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

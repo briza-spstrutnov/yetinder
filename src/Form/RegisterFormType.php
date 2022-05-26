@@ -17,7 +17,7 @@ class RegisterFormType extends AbstractType {
         $builder
             ->add('name', TextType::class, [
                 'attr' => array(
-                    'placeholder' => 'Uživatelské jméno',
+                    'placeholder' => 'Yetiho jméno',
                 ),
                 'label' => false
             ])
