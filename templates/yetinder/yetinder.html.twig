@@ -13,6 +13,7 @@
         </form>
     </header>
     <h2>Yetinder</h2>
+    {% if yeti is defined %}
     <div class="random-yeti">
         <table>
             <tr>
@@ -48,4 +49,7 @@
             </tr>
         </table>
     </div>
+    {% else %}
+        <h3>Žádný yeti k hodnocení</h3>
+    {% endif %}
 {% endblock %}

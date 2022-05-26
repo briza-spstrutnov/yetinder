@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Repository\UserRepository;
 use App\Repository\YetiRepository;
-use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,22 +37,11 @@ class YetinderController extends AbstractController {
 
     #[Route('/yetinder', name: 'yetinder')]
     public function yetinder(YetiRepository $yetiRepository, UserRepository $userRepository): Response {
-        /* TODO:
-            1. --Načíst celou db--
-            2. --Zkontrolovat podle id, na které už uživatel reagoval--
-            3. --Smazat ty, na které už uživatel reagoval--
-            4. --Udělat random z upraveného arraye--
-            5. --Vypsat na stránku--
-        */
-
-
         $yetiDb = $yetiRepository->findAll();
 
         $session = $this->requestStack->getSession();
         $user = $session->get('user');
-        $users = $userRepository->findAll();
 
-        // redirect pokud uživatel není přihlášený
         if (!$user) {
             return $this->redirectToRoute('user_login');
         }
@@ -67,7 +55,7 @@ class YetinderController extends AbstractController {
         $liked = $userDb->getLiked()->getValues();
         $likedId = array();
         foreach ($liked as $x) {
-            array_push($likedId, $x->getId());
+            $likedId[] = $x->getId();
         }
 
         $yetiId = array();
@@ -83,7 +71,11 @@ class YetinderController extends AbstractController {
 
         $yetiNoInteraction = array();
         foreach($yetiId as $i){
-            array_push($yetiNoInteraction, $i);
+            $yetiNoInteraction[] = $i;
+        }
+
+        if(count($yetiNoInteraction) <= 0){
+            return $this->render('yetinder/yetinder.html.twig');
         }
 
         $yeti = $yetiNoInteraction[rand(0, count($yetiNoInteraction) - 1)];
