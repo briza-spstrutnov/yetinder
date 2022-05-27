@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Repository\TimeClickRepository;
 use App\Repository\UserRepository;
 use App\Repository\YetiRepository;
@@ -16,6 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use App\Entity\Yeti;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 class YetinderController extends AbstractController {
     private $em;
@@ -38,18 +40,14 @@ class YetinderController extends AbstractController {
 
     #[Route('/yetinder', name: 'yetinder')]
     public function yetinder(YetiRepository $yetiRepository, UserRepository $userRepository): Response {
-//        $yetiDb = $yetiRepository->getRandom();
-
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('name', 'name');
+        $rsm = new ResultSetMappingBuilder($this->em);
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Yeti', 'yeti');
 
         $query = $this->em->createNativeQuery('SELECT * FROM yeti WHERE RAND()<(SELECT ((1/COUNT(*))*10) FROM yeti) ORDER BY RAND() LIMIT 1', $rsm);
-//        $query->setParameter('id', 1);
-
-        dd($query->getResult());
+        $yeti = $query->getResult();
 
         return $this->render('yetinder/yetinder.html.twig', [
-//            'yeti' => $yetiDb
+            'yeti' => $yeti[0]
         ]);
     }
 
