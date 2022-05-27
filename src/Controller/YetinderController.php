@@ -56,8 +56,6 @@ class YetinderController extends AbstractController {
         $id = $request->request->get('id');
         $yeti = $yetiRepository->find($id);
 
-        $this->addTimeClicks($timeClickRepository);
-
         $rating = $yeti->getRating();
         $rating += $number;
         $yeti->setRating($rating);
@@ -65,41 +63,5 @@ class YetinderController extends AbstractController {
         $this->em->flush();
 
         return $this->redirectToRoute('yetinder');
-    }
-
-    public function addTimeClicks(TimeClickRepository $timeClickRepository){
-//        date_default_timezone_set('Europe/Prague');
-//        $time = $timeClickRepository->findAll();
-//        $startTimeString = array();
-//        $endTimeString = array();
-//        foreach ($time as $t) {
-//            $startTimeString[] = $t->getTime();
-//            $endTimeString[] = $t->getEndTime();
-//        }
-//
-//        $startTime = array();
-//        foreach ($startTimeString as $time) {
-//            $startTime[] = strtotime($time);
-//        }
-//
-//        $endTime = array();
-//        foreach ($endTimeString as $time) {
-//            $endTime[] = strtotime($time);
-//        }
-//
-//        $now = time();
-//        $dayTime = array();
-//        foreach (array_combine($startTime, $endTime) as $start => $end) {
-//            if ($now >= $start && $now <= $end) {
-//                $dayTime[] = $start;
-//                $dayTime[] = $end;
-//            }
-//        }
-//
-//        $startDayTime = date('H:i:s', $dayTime[0]);
-//        $clickTime = $timeClickRepository->findOneBy(['time' => $startDayTime]);
-//        $clicks = $clickTime->getClicks();
-//        $clicks++;
-//        $clickTime->setClicks($clicks);
     }
 }

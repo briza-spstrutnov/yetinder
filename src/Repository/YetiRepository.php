@@ -48,23 +48,6 @@ class YetiRepository extends ServiceEntityRepository {
         return $qb->getQuery()->getResult();
     }
 
-    public function getRandom(){
-        $qb = $this->createQueryBuilder('yeti');
-//        $qb
-//            ->select('yeti')
-//            ->orderBy('RAND()')
-//            ->setMaxResults(1);
-
-        $rsm = new ResultSetMapping();
-
-
-        $query = $this->getEntityManager()->createNativeQuery('SELECT * FROM yeti WHERE RAND()<(SELECT ((1/COUNT(*))*10) FROM yeti) ORDER BY RAND() LIMIT 1', $rsm);
-        $query->setParameter('id', '1');
-        // "SELECT * FROM yeti WHERE RAND()<(SELECT ((1/COUNT(*))*10) FROM yeti) ORDER BY RAND() LIMIT 1" random select
-        return $query->getResult();
-//        return $qb->getQuery()->getOneOrNullResult();
-    }
-
 //    /**
 //     * @return Yeti[] Returns an array of Yeti objects
 //     */
