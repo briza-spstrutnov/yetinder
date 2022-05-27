@@ -92,7 +92,9 @@ class StatsController extends AbstractController {
 
         $qb
             ->select('count(yeti)')
-            ->groupBy('yeti.gender');
+            ->groupBy('yeti.gender')
+            ->select('count(yeti)')
+        ;
 
         $femaleCount = $qb->getQuery()->getResult()[0];
         $maleCount = $qb->getQuery()->getResult()[1];

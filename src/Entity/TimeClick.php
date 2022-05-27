@@ -6,8 +6,7 @@ use App\Repository\TimeClickRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TimeClickRepository::class)]
-class TimeClick
-{
+class TimeClick {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -17,63 +16,60 @@ class TimeClick
     private $time;
 
     #[ORM\Column(type: 'integer')]
-    private $clicks;
+    private $user;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $dayTime;
-
-    #[ORM\Column(type: 'string')]
-    private $endTime;
-
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getTime(): ?string
-    {
+    public function getTime(): ?string {
         return $this->time;
     }
 
-    public function setTime(string $time): self
-    {
+    public function setTime(string $time): self {
         $this->time = $time;
 
         return $this;
     }
 
-    public function getClicks(): ?int
-    {
+    public function getClicks(): ?int {
         return $this->clicks;
     }
 
-    public function setClicks(int $clicks): self
-    {
+    public function setClicks(int $clicks): self {
         $this->clicks = $clicks;
 
         return $this;
     }
 
-    public function getDayTime(): ?string
-    {
+    public function getDayTime(): ?string {
         return $this->dayTime;
     }
 
-    public function setDayTime(string $dayTime): self
-    {
+    public function setDayTime(string $dayTime): self {
         $this->dayTime = $dayTime;
 
         return $this;
     }
 
-    public function getEndTime(): ?string
-    {
+    public function getEndTime(): ?string {
         return $this->endTime;
     }
 
-    public function setEndTime(string $endTime): self
-    {
+    public function setEndTime(string $endTime): self {
         $this->endTime = $endTime;
+
+        return $this;
+    }
+
+    public function getUser(): ?int
+    {
+        return $this->user;
+    }
+
+    public function setUser(int $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
