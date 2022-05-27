@@ -15,7 +15,7 @@ use Doctrine\ORM\Query\ResultSetMappingBuilder;
 class StatsController extends AbstractController {
     private $em;
 
-    public function __construct(EntityManagerInterface $em){
+    public function __construct(EntityManagerInterface $em) {
         $this->em = $em;
     }
 
@@ -86,15 +86,13 @@ class StatsController extends AbstractController {
 //        ]);
 //    }
     #[Route('/stats', name: 'app_stats')]
-    public function stats(YetiRepository $yetiRepository): Response{
+    public function stats(YetiRepository $yetiRepository): Response {
         // SELECT COUNT(*), gender FROM yeti GROUP BY gender
         $qb = $yetiRepository->createQueryBuilder('yeti');
 
-        $qb
-            ->select('count(yeti)')
+        $qb ->select('count(yeti)')
             ->groupBy('yeti.gender')
-            ->select('count(yeti)')
-        ;
+            ->select('count(yeti)');
 
         $femaleCount = $qb->getQuery()->getResult()[0];
         $maleCount = $qb->getQuery()->getResult()[1];

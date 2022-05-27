@@ -62,13 +62,11 @@ class TimeClick {
         return $this;
     }
 
-    public function getUser(): ?int
-    {
+    public function getUser(): ?int {
         return $this->user;
     }
 
-    public function setUser(int $user): self
-    {
+    public function setUser(int $user): self {
         $this->user = $user;
 
         return $this;

@@ -14,15 +14,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method TimeClick[]    findAll()
  * @method TimeClick[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TimeClickRepository extends ServiceEntityRepository
-{
-    public function __construct(ManagerRegistry $registry)
-    {
+class TimeClickRepository extends ServiceEntityRepository {
+    public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, TimeClick::class);
     }
 
-    public function add(TimeClick $entity, bool $flush = false): void
-    {
+    public function add(TimeClick $entity, bool $flush = false): void {
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
@@ -30,8 +27,7 @@ class TimeClickRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(TimeClick $entity, bool $flush = false): void
-    {
+    public function remove(TimeClick $entity, bool $flush = false): void {
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {

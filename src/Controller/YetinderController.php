@@ -2,22 +2,17 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Entity\TimeClick;
 use App\Repository\TimeClickRepository;
-use App\Repository\UserRepository;
 use App\Repository\YetiRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\User\UserInterface;
-use App\Entity\Yeti;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class YetinderController extends AbstractController {
     private $em;
@@ -52,9 +47,25 @@ class YetinderController extends AbstractController {
     }
 
     #[Route('/yetinder/vote/{number}', name: 'vote')]
-    public function vote(Request $request, YetiRepository $yetiRepository, TimeClickRepository $timeClickRepository, int $number): Response {
+    public function vote(Request $request, YetiRepository $yetiRepository, TimeClickRepository $timeClickRepository, int $number, TokenStorageInterface $tokenStorage): Response {
+        date_default_timezone_set("Europe/Prague");
+        $now = date('H:i:s');
+        $securityContext = $this->container->get('security.authorization_checker');
+
+        if(!$securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')){
+            return $this->redirectToRoute('app_login');
+        }
+
+        $userId = $tokenStorage->getToken()->getUser();
+
         $id = $request->request->get('id');
         $yeti = $yetiRepository->find($id);
+
+        $timeClick = new TimeClick();
+
+        $timeClick->setTime($now);
+        $timeClick->setUser($userId->getId());
+        $this->em->persist($timeClick);
 
         $rating = $yeti->getRating();
         $rating += $number;
