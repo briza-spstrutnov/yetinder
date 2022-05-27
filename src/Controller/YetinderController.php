@@ -51,31 +51,15 @@ class YetinderController extends AbstractController {
         ]);
     }
 
-    #[Route('/yetinder/upvote', name: 'upvote')]
-    public function upvote(Request $request, YetiRepository $yetiRepository, TimeClickRepository $timeClickRepository): Response {
+    #[Route('/yetinder/vote/{number}', name: 'vote')]
+    public function vote(Request $request, YetiRepository $yetiRepository, TimeClickRepository $timeClickRepository, int $number): Response {
         $id = $request->request->get('id');
         $yeti = $yetiRepository->find($id);
 
         $this->addTimeClicks($timeClickRepository);
 
         $rating = $yeti->getRating();
-        $rating++;
-        $yeti->setRating($rating);
-        $this->em->persist($yeti);
-        $this->em->flush();
-
-        return $this->redirectToRoute('yetinder');
-    }
-
-    #[Route('/yetinder/downvote', name: 'downvote')]
-    public function downvote(Request $request, YetiRepository $yetiRepository, TimeClickRepository $timeClickRepository): Response {
-        $id = $request->request->get('id');
-        $yeti = $yetiRepository->find($id);
-
-        $this->addTimeClicks($timeClickRepository);
-
-        $rating = $yeti->getRating();
-        $rating--;
+        $rating += $number;
         $yeti->setRating($rating);
         $this->em->persist($yeti);
         $this->em->flush();

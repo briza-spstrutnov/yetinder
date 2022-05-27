@@ -28,13 +28,13 @@
                     </tr>
                     <tr>
                         <td>
-                            <form action="/yetinder/upvote" method="post">
+                            <form action="/yetinder/vote/1" method="post">
                                 <input style="display: none" name="id" type="number" value="{{ yeti.id }}">
                                 <input type="submit" value="Upvote">
                             </form>
                         </td>
                         <td>
-                            <form action="/yetinder/downvote" method="post">
+                            <form action="/yetinder/vote/-1" method="post">
                                 <input style="display: none" name="id" type="number" value="{{ yeti.id }}">
                                 <input type="submit" value="Downvote">
                             </form>
