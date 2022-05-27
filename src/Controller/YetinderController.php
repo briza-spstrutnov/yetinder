@@ -39,7 +39,7 @@ class YetinderController extends AbstractController {
     }
 
     #[Route('/yetinder', name: 'yetinder')]
-    public function yetinder(YetiRepository $yetiRepository, UserRepository $userRepository): Response {
+    public function yetinder(): Response {
         $rsm = new ResultSetMappingBuilder($this->em);
         $rsm->addRootEntityFromClassMetadata('App\Entity\Yeti', 'yeti');
 
@@ -52,14 +52,9 @@ class YetinderController extends AbstractController {
     }
 
     #[Route('/yetinder/upvote', name: 'upvote')]
-    public function upvote(Request $request, YetiRepository $yetiRepository, UserRepository $userRepository, TimeClickRepository $timeClickRepository, UserInterface $user): Response {
+    public function upvote(Request $request, YetiRepository $yetiRepository, TimeClickRepository $timeClickRepository): Response {
         $id = $request->request->get('id');
         $yeti = $yetiRepository->find($id);
-
-        $userId = $user->getId();
-
-//        $userDb = $userRepository->find($userId);
-//        $userDb->addLiked($yeti);
 
         $this->addTimeClicks($timeClickRepository);
 
@@ -73,14 +68,9 @@ class YetinderController extends AbstractController {
     }
 
     #[Route('/yetinder/downvote', name: 'downvote')]
-    public function downvote(Request $request, YetiRepository $yetiRepository, UserRepository $userRepository, TimeClickRepository $timeClickRepository, UserInterface $user): Response {
+    public function downvote(Request $request, YetiRepository $yetiRepository, TimeClickRepository $timeClickRepository): Response {
         $id = $request->request->get('id');
         $yeti = $yetiRepository->find($id);
-
-        $userId = $user->getId();
-
-//        $userDb = $userRepository->find($userId);
-//        $userDb->addLiked($yeti);
 
         $this->addTimeClicks($timeClickRepository);
 
