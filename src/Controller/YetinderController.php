@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\TimeClickRepository;
 use App\Repository\UserRepository;
 use App\Repository\YetiRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,6 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Entity\Yeti;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 class YetinderController extends AbstractController {
     private $em;
@@ -34,26 +37,19 @@ class YetinderController extends AbstractController {
     }
 
     #[Route('/yetinder', name: 'yetinder')]
-    public function yetinder(YetiRepository $yetiRepository, UserRepository $userRepository, UserInterface $user): Response {
-//        $yetiDb = $yetiRepository->findAll();
-        $yetiDb = $yetiRepository->createQueryBuilder('SELECT * FROM yeti');
-//        $yeti = [rand(1, count($yetiDb))];
-        dd($yetiDb);
+    public function yetinder(YetiRepository $yetiRepository, UserRepository $userRepository): Response {
+//        $yetiDb = $yetiRepository->getRandom();
 
-        $securityContext = $this->container->get('security.authorization_checker');
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('name', 'name');
 
-        if (!$securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return $this->redirectToRoute('app_login');
-        }
+        $query = $this->em->createNativeQuery('SELECT * FROM yeti WHERE RAND()<(SELECT ((1/COUNT(*))*10) FROM yeti) ORDER BY RAND() LIMIT 1', $rsm);
+//        $query->setParameter('id', 1);
 
-        $userId = $user->getId();
-
-        $userDb = $userRepository->find($userId);
-
-//        $yeti = $yetiRepository->find($yeti[0]);
+        dd($query->getResult());
 
         return $this->render('yetinder/yetinder.html.twig', [
-            'yeti' => $yetiDb
+//            'yeti' => $yetiDb
         ]);
     }
 

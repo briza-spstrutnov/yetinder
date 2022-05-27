@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Yeti;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * @extends ServiceEntityRepository<Yeti>
@@ -14,15 +16,12 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Yeti[]    findAll()
  * @method Yeti[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class YetiRepository extends ServiceEntityRepository
-{
-    public function __construct(ManagerRegistry $registry)
-    {
+class YetiRepository extends ServiceEntityRepository {
+    public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Yeti::class);
     }
 
-    public function add(Yeti $entity, bool $flush = false): void
-    {
+    public function add(Yeti $entity, bool $flush = false): void {
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
@@ -30,8 +29,7 @@ class YetiRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Yeti $entity, bool $flush = false): void
-    {
+    public function remove(Yeti $entity, bool $flush = false): void {
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {
@@ -40,14 +38,31 @@ class YetiRepository extends ServiceEntityRepository
     }
 
     public function getTopTen() {
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->createQueryBuilder('yeti');
 
         $qb
-            ->select('p')
-            ->orderBy('p.rating', 'DESC')
+            ->select('yeti')
+            ->orderBy('yeti.rating', 'DESC')
             ->setMaxResults(10);
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function getRandom(){
+        $qb = $this->createQueryBuilder('yeti');
+//        $qb
+//            ->select('yeti')
+//            ->orderBy('RAND()')
+//            ->setMaxResults(1);
+
+        $rsm = new ResultSetMapping();
+
+
+        $query = $this->getEntityManager()->createNativeQuery('SELECT * FROM yeti WHERE RAND()<(SELECT ((1/COUNT(*))*10) FROM yeti) ORDER BY RAND() LIMIT 1', $rsm);
+        $query->setParameter('id', '1');
+        // "SELECT * FROM yeti WHERE RAND()<(SELECT ((1/COUNT(*))*10) FROM yeti) ORDER BY RAND() LIMIT 1" random select
+        return $query->getResult();
+//        return $qb->getQuery()->getOneOrNullResult();
     }
 
 //    /**
