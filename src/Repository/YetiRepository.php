@@ -39,6 +39,17 @@ class YetiRepository extends ServiceEntityRepository
         }
     }
 
+    public function getTopTen() {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb
+            ->select('p')
+            ->orderBy('p.rating', 'DESC')
+            ->setMaxResults(10);
+
+        return $qb->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Yeti[] Returns an array of Yeti objects
 //     */

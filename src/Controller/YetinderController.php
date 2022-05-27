@@ -25,7 +25,7 @@ class YetinderController extends AbstractController {
 
     #[Route('/', name: 'best')]
     public function index(YetiRepository $yetiRepository): Response {
-        $yetiDb = $yetiRepository->findBy([], ['rating' => 'DESC'], 10);
+        $yetiDb = $yetiRepository->getTopTen();
 
         return $this->render('yetinder/best.html.twig', [
             'controller_name' => 'YetinderController',
@@ -36,8 +36,9 @@ class YetinderController extends AbstractController {
     #[Route('/yetinder', name: 'yetinder')]
     public function yetinder(YetiRepository $yetiRepository, UserRepository $userRepository, UserInterface $user): Response {
 //        $yetiDb = $yetiRepository->findAll();
-        $yetiDb = $yetiRepository->createQueryBuilder('SELECT name FROM yeti ORDER BY RAND() LIMIT 1');
+        $yetiDb = $yetiRepository->createQueryBuilder('SELECT * FROM yeti');
 //        $yeti = [rand(1, count($yetiDb))];
+        dd($yetiDb);
 
         $securityContext = $this->container->get('security.authorization_checker');
 
